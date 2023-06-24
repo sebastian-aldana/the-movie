@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true, collection: 'movies' })
 export class Movie extends Document {
   @Prop({ required: true })
   movieApiId: number;
