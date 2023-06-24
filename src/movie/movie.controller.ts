@@ -24,18 +24,26 @@ export class MovieController {
     return this.movieService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movieService.findOne(id);
+  @Get(':movieId')
+  findOne(@Param('movieId') movieId: string) {
+    return this.movieService.findOne(movieId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.movieService.update(+id, updateMovieDto);
+  @Get(':movieId/notes')
+  findNotes(@Param('movieId') movieId: string) {
+    return this.movieService.findNotes(movieId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.movieService.remove(+id);
+  @Patch(':movieId')
+  update(
+    @Param('movieId') movieId: string,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
+    return this.movieService.update(movieId, updateMovieDto);
+  }
+
+  @Delete(':movieId')
+  remove(@Param('movieId') movieId: string) {
+    return this.movieService.remove(+movieId);
   }
 }

@@ -16,5 +16,6 @@ import { MovieNote, MovieNoteSchema } from './entities/movie-note.entity';
   ],
   controllers: [MovieNoteController],
   providers: [MovieNoteService],
+  exports: [MovieNoteService],
 })
 export class MovieNoteModule {}

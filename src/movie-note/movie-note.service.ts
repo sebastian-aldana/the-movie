@@ -28,6 +28,14 @@ export class MovieNoteService {
     return `This action returns a #${id} movieNote`;
   }
 
+  findNotesByUserId(userId: string) {
+    return this.movieNote.find({ userId }).populate('movieId').exec();
+  }
+
+  findNotesByMovieId(movieId: string) {
+    return this.movieNote.find({ movieId }).exec();
+  }
+
   update(id: number, updateMovieNoteDto: UpdateMovieNoteDto) {
     return `This action updates a #${id} movieNote`;
   }

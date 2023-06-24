@@ -4,10 +4,14 @@ import { Model } from 'mongoose';
 
 import { CreateMovieDto, UpdateMovieDto } from './dto/movie.dto';
 import { Movie } from './entities/movie.entity';
+import { MovieNoteService } from '../movie-note/movie-note.service';
 
 @Injectable()
 export class MovieService {
-  constructor(@InjectModel(Movie.name) private movieModel: Model<Movie>) {}
+  constructor(
+    private movieNoteService: MovieNoteService,
+    @InjectModel(Movie.name) private movieModel: Model<Movie>,
+  ) {}
 
   create(createMovieDto: CreateMovieDto) {
     const newModel = new this.movieModel(createMovieDto);
@@ -18,15 +22,19 @@ export class MovieService {
     return this.movieModel.find().exec();
   }
 
-  findOne(id: string) {
-    return this.movieModel.findById(id);
+  findOne(movieId: string) {
+    return this.movieModel.findById(movieId);
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  findNotes(movieId: string) {
+    return this.movieNoteService.findNotesByMovieId(movieId);
   }
 
-  remove(id: number) {
-    return this.movieModel.findByIdAndDelete(id);
+  update(movieId: string, updateMovieDto: UpdateMovieDto) {
+    return `This action updates a #${movieId} movie`;
+  }
+
+  remove(movieId: number) {
+    return this.movieModel.findByIdAndDelete(movieId);
   }
 }

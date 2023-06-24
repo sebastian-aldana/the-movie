@@ -5,11 +5,13 @@ import { Model } from 'mongoose';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { FavoriteMovieService } from '../favorite-movie/favorite-movie.service';
+import { MovieNoteService } from '../movie-note/movie-note.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private favoriteMovieService: FavoriteMovieService,
+    private movieNoteService: MovieNoteService,
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
@@ -23,9 +25,11 @@ export class UserService {
   }
 
   findFavoriteMovies(userId) {
-    const userFavoriteMovies =
-      this.favoriteMovieService.findFavoriteMovieByUser(userId);
-    return userFavoriteMovies;
+    return this.favoriteMovieService.findFavoriteMovieByUser(userId);
+  }
+
+  findNotes(userId) {
+    return this.movieNoteService.findNotesByUserId(userId);
   }
 
   findOne(userId: string) {

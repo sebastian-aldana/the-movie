@@ -34,6 +34,11 @@ export class UserController {
     return this.userService.findFavoriteMovies(userId);
   }
 
+  @Get(':userId/notes')
+  findNotes(@Param('userId') userId: string) {
+    return this.userService.findNotes(userId);
+  }
+
   @Patch(':userId')
   update(
     @Param('userId') userId: string,

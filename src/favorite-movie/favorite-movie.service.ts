@@ -37,11 +37,7 @@ export class FavoriteMovieService {
   }
 
   findOne(movieId: string) {
-    return this.favoriteMovieModel
-      .findById(movieId)
-      .populate('movieId')
-
-      .exec();
+    return this.favoriteMovieModel.findById(movieId).populate('movieId').exec();
   }
 
   remove(movieId: string) {
