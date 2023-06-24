@@ -29,14 +29,22 @@ export class FavoriteMovieService {
       .exec();
   }
 
-  findOne(id: string) {
+  findFavoriteMovieByUser(id: string) {
     return this.favoriteMovieModel
-      .findById(id)
+      .find({ userId: id })
       .populate('movieId')
-      .populate('userId');
+      .exec();
   }
 
-  remove(id: string) {
-    return this.favoriteMovieModel.findByIdAndDelete(id);
+  findOne(movieId: string) {
+    return this.favoriteMovieModel
+      .findById(movieId)
+      .populate('movieId')
+
+      .exec();
+  }
+
+  remove(movieId: string) {
+    return this.favoriteMovieModel.findByIdAndDelete(movieId);
   }
 }

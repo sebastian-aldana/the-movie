@@ -8,6 +8,7 @@ import { MovieModule } from './movie/movie.module';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
 import { FavoriteMovieModule } from './favorite-movie/favorite-movie.module';
+import { MovieNoteModule } from './movie-note/movie-note.module';
 import config from './config';
 
 @Module({
@@ -21,6 +22,7 @@ import config from './config';
       isGlobal: true,
     }),
     FavoriteMovieModule,
+    MovieNoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

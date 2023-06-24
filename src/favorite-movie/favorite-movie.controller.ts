@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FavoriteMovieService } from './favorite-movie.service';
 import { CreateFavoriteMovieDto } from './dto/favorite-movie.dto';
 
@@ -32,13 +24,13 @@ export class FavoriteMovieController {
     return this.favoriteMovieService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.favoriteMovieService.findOne(id);
+  @Get(':movieId')
+  findOne(@Param('movieId') movieId: string) {
+    return this.favoriteMovieService.findOne(movieId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.favoriteMovieService.remove(id);
+  @Delete(':movieId')
+  remove(@Param('movieId') movieId: string) {
+    return this.favoriteMovieService.remove(movieId);
   }
 }

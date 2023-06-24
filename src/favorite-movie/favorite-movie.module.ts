@@ -19,5 +19,6 @@ import {
   ],
   controllers: [FavoriteMovieController],
   providers: [FavoriteMovieService],
+  exports: [FavoriteMovieService],
 })
 export class FavoriteMovieModule {}
