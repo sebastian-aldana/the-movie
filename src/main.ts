@@ -10,6 +10,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  console.log('app bootstraped');
+  console.log('app running on port 3000');
   await app.listen(3000);
 }
 bootstrap();

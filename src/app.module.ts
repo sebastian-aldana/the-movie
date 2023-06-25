@@ -11,6 +11,7 @@ import { FavoriteMovieModule } from './favorite-movie/favorite-movie.module';
 import { MovieNoteModule } from './movie-note/movie-note.module';
 import { AuthModule } from './auth/auth.module';
 import config from './config';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -18,9 +19,12 @@ import config from './config';
     MovieModule,
     DatabaseModule,
     ConfigModule.forRoot({
-      envFilePath: enviroments[process.env.NODE_ENV] || '.env',
       load: [config],
       isGlobal: true,
+      validationSchema: Joi.object({
+        MONGO_CONNECTION: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+      }),
     }),
     FavoriteMovieModule,
     MovieNoteModule,
