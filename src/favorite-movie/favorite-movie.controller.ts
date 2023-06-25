@@ -1,35 +1,41 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
-import { FavoriteMovieService } from './favorite-movie.service';
-import { CreateFavoriteMovieDto } from './dto/favorite-movie.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { FavoriteMovieService } from './favorite-movie.service';
+
+@ApiTags('Favorite Movie')
 @Controller('favorite-movie')
 export class FavoriteMovieController {
   constructor(private readonly favoriteMovieService: FavoriteMovieService) {}
 
   @Post(':userId/movieId/:movieId')
-  create(
-    @Param('userId') userId,
-    @Param('movieId') movieId,
-    @Body() createFavoriteMovieDto: CreateFavoriteMovieDto,
-  ) {
-    return this.favoriteMovieService.create(
-      userId,
-      movieId,
-      createFavoriteMovieDto,
-    );
+  @ApiOperation({
+    summary: `Favorite movie creation service for adding a movie to a user's favorites list using the movie ID and user ID`,
+  })
+  create(@Param('userId') userId, @Param('movieId') movieId) {
+    return this.favoriteMovieService.create(userId, movieId);
   }
 
   @Get()
+  @ApiOperation({
+    summary: `All favorite movies retrieval service for fetching all movies from a user's favorites list`,
+  })
   findAll() {
     return this.favoriteMovieService.findAll();
   }
 
   @Get(':movieId')
+  @ApiOperation({
+    summary: `Favorite movie retrieval service for fetching a specific movie from a user's favorites list by its ID`,
+  })
   findOne(@Param('movieId') movieId: string) {
     return this.favoriteMovieService.findOne(movieId);
   }
 
   @Delete(':movieId')
+  @ApiOperation({
+    summary: `Favorite movie deletion service for removing a specific movie from a user's favorites`,
+  })
   remove(@Param('movieId') movieId: string) {
     return this.favoriteMovieService.remove(movieId);
   }

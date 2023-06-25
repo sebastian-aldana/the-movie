@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,8 +12,18 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  console.log('app bootstraped');
-  console.log('app running on port 3000');
+
+  const config = new DocumentBuilder()
+    .addBasicAuth()
+    .setTitle('the movie API')
+    .setDescription('rating movies in the world')
+    .setVersion('0.1')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('docs', app, document);
+
   await app.listen(3000);
 }
 bootstrap();
