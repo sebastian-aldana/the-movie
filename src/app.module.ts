@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
 import { FavoriteMovieModule } from './favorite-movie/favorite-movie.module';
 import { MovieNoteModule } from './movie-note/movie-note.module';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 
 @Module({
@@ -23,6 +24,7 @@ import config from './config';
     }),
     FavoriteMovieModule,
     MovieNoteModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

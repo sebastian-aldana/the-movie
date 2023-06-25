@@ -6,10 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Public } from '../decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -34,6 +39,7 @@ export class UserController {
     return this.userService.findFavoriteMovies(userId);
   }
 
+  @Public()
   @Get(':userId/notes')
   findNotes(@Param('userId') userId: string) {
     return this.userService.findNotes(userId);

@@ -20,5 +20,6 @@ import { MovieNoteModule } from '../movie-note/movie-note.module';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}
