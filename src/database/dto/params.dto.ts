@@ -13,5 +13,11 @@ export class ParamsDto {
   @Min(0)
   offset = 0;
 
+  @IsOptional()
+  @Type(() => Number)
+  @Min(1)
+  @Max(100)
+  page = 1;
+
   [key: string]: any;
 }

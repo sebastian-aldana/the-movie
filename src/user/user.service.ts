@@ -8,12 +8,14 @@ import { ParamsDto } from '../database/dto/params.dto';
 import { User } from './entities/user.entity';
 import { FavoriteMovieService } from '../favorite-movie/favorite-movie.service';
 import { MovieNoteService } from '../movie-note/movie-note.service';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private favoriteMovieService: FavoriteMovieService,
     private movieNoteService: MovieNoteService,
+    private databaseService: DatabaseService,
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
@@ -25,12 +27,17 @@ export class UserService {
   }
 
   async findAll(params: ParamsDto) {
-    const { limit, offset, ...query } = params;
-    return this.userModel
+    const { limit, offset, page, ...query } = params;
+    const pagination = await this.databaseService.pagination(
+      this.userModel,
+      params,
+    );
+    const response = await this.userModel
       .find({ ...query })
       .limit(limit)
-      .skip(offset)
+      .skip(pagination.skip)
       .exec();
+    return { ...pagination, data: response };
   }
 
   findFavoriteMovies(params: ParamsDto, userId) {

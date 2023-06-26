@@ -5,10 +5,12 @@ import { Model } from 'mongoose';
 import { MovieNote } from './entities/movie-note.entity';
 import { CreateMovieNoteDto, UpdateMovieNoteDto } from './dto/movie-note.dto';
 import { ParamsDto } from '../database/dto/params.dto';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class MovieNoteService {
   constructor(
+    private databaseService: DatabaseService,
     @InjectModel(MovieNote.name) private movieNote: Model<MovieNote>,
   ) {}
 
@@ -21,26 +23,50 @@ export class MovieNoteService {
     return newModel.save();
   }
 
-  findAll() {
-    return this.movieNote.find().populate('movieId').exec();
+  async findAll(params: ParamsDto) {
+    const { limit, ...query } = params;
+    const pagination = await this.databaseService.pagination(
+      this.movieNote,
+      params,
+    );
+    return this.movieNote
+      .find({ ...query })
+      .limit(limit)
+      .skip(pagination.skip)
+      .populate('movieId')
+      .exec();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} movieNote`;
   }
 
-  findNotesByUserId(params: ParamsDto, userId: string) {
-    const { limit, offset, ...query } = params;
-    return this.movieNote
+  async findNotesByUserId(params: ParamsDto, userId: string) {
+    const { limit, ...query } = params;
+    const pagination = await this.databaseService.pagination(
+      this.movieNote,
+      params,
+    );
+    const response = await this.movieNote
       .find({ userId, ...query })
       .limit(limit)
-      .skip(offset)
+      .skip(pagination.skip)
       .populate('movieId')
       .exec();
+    return { ...pagination, data: response };
   }
 
-  findNotesByMovieId(movieId: string) {
-    return this.movieNote.find({ movieId }).exec();
+  async findNotesByMovieId(params: ParamsDto, movieId: string) {
+    const { limit, ...query } = params;
+    const pagination = await this.databaseService.pagination(
+      this.movieNote,
+      params,
+    );
+    return this.movieNote
+      .find({ movieId, ...query })
+      .limit(limit)
+      .skip(pagination.skip)
+      .exec();
   }
 
   update(id: number, updateMovieNoteDto: UpdateMovieNoteDto) {

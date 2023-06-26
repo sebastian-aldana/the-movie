@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { MovieNoteService } from './movie-note.service';
 import { CreateMovieNoteDto, UpdateMovieNoteDto } from './dto/movie-note.dto';
+import { ParamsDto } from '../database/dto/params.dto';
 
 @ApiTags('Movie Note')
 @Controller('movie-note')
@@ -34,8 +36,8 @@ export class MovieNoteController {
     summary:
       'All notes retrieval service for fetching all notes from the database',
   })
-  findAll() {
-    return this.movieNoteService.findAll();
+  findAll(@Query() params: ParamsDto) {
+    return this.movieNoteService.findAll(params);
   }
 
   @Get(':id')

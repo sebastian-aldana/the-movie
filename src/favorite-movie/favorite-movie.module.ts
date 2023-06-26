@@ -7,9 +7,11 @@ import {
   FavoriteMovie,
   FavoriteMovieSchema,
 } from './entities/favorite-movie.entity';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     MongooseModule.forFeature([
       {
         name: FavoriteMovie.name,

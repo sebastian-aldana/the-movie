@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 
 import { ParamsDto } from '../database/dto/params.dto';
 import { FavoriteMovie } from './entities/favorite-movie.entity';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class FavoriteMovieService {
   constructor(
     @InjectModel(FavoriteMovie.name)
     private favoriteMovieModel: Model<FavoriteMovie>,
+    private databaseService: DatabaseService,
   ) {}
 
   create(userId, movieId) {
@@ -28,14 +30,19 @@ export class FavoriteMovieService {
       .exec();
   }
 
-  findFavoriteMovieByUser(params: ParamsDto, id: string) {
-    const { limit, offset, ...query } = params;
-    return this.favoriteMovieModel
+  async findFavoriteMovieByUser(params: ParamsDto, id: string) {
+    const { limit, offset, page, ...query } = params;
+    const pagination = await this.databaseService.pagination(
+      this.favoriteMovieModel,
+      params,
+    );
+    const response = this.favoriteMovieModel
       .find({ userId: id, ...query })
       .limit(limit)
-      .skip(offset)
+      .skip(pagination.skip)
       .populate('movieId')
       .exec();
+    return { data: response };
   }
 
   findOne(movieId: string) {

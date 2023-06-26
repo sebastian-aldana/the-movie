@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { MovieService } from './movie.service';
 import { CreateMovieDto, UpdateMovieDto } from './dto/movie.dto';
+import { ParamsDto } from '../database/dto/params.dto';
 
 @ApiTags('Movie')
 @Controller('movie')
@@ -30,8 +32,8 @@ export class MovieController {
     summary:
       'All movies retrieval service for fetching all movies from the database',
   })
-  findAll() {
-    return this.movieService.findAll();
+  findAll(@Query() params: ParamsDto) {
+    return this.movieService.findAll(params);
   }
 
   @Get(':movieId')
@@ -48,8 +50,8 @@ export class MovieController {
     summary:
       'Movie notes retrieval service for fetching all notes associated with a specific movie',
   })
-  findNotes(@Param('movieId') movieId: string) {
-    return this.movieService.findNotes(movieId);
+  findNotes(@Query() params: ParamsDto, @Param('movieId') movieId: string) {
+    return this.movieService.findNotes(params, movieId);
   }
 
   @Patch(':movieId')
