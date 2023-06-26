@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
+import { ParamsDto } from '../database/dto/params.dto';
 import { FavoriteMovie } from './entities/favorite-movie.entity';
 
 @Injectable()
@@ -27,9 +28,12 @@ export class FavoriteMovieService {
       .exec();
   }
 
-  findFavoriteMovieByUser(id: string) {
+  findFavoriteMovieByUser(params: ParamsDto, id: string) {
+    const { limit, offset, ...query } = params;
     return this.favoriteMovieModel
-      .find({ userId: id })
+      .find({ userId: id, ...query })
+      .limit(limit)
+      .skip(offset)
       .populate('movieId')
       .exec();
   }

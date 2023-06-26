@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { MovieNote } from './entities/movie-note.entity';
 import { CreateMovieNoteDto, UpdateMovieNoteDto } from './dto/movie-note.dto';
+import { ParamsDto } from '../database/dto/params.dto';
 
 @Injectable()
 export class MovieNoteService {
@@ -28,8 +29,14 @@ export class MovieNoteService {
     return `This action returns a #${id} movieNote`;
   }
 
-  findNotesByUserId(userId: string) {
-    return this.movieNote.find({ userId }).populate('movieId').exec();
+  findNotesByUserId(params: ParamsDto, userId: string) {
+    const { limit, offset, ...query } = params;
+    return this.movieNote
+      .find({ userId, ...query })
+      .limit(limit)
+      .skip(offset)
+      .populate('movieId')
+      .exec();
   }
 
   findNotesByMovieId(movieId: string) {

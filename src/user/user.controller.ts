@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -14,6 +15,7 @@ import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { Public } from '../decorators/public.decorator';
+import { ParamsDto } from '../database/dto/params.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('User')
@@ -34,8 +36,8 @@ export class UserController {
     summary:
       'Multiple users retrieval service for fetching all user data from a database',
   })
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query() params: ParamsDto) {
+    return this.userService.findAll(params);
   }
 
   @Get(':userId')
@@ -51,8 +53,11 @@ export class UserController {
   @ApiOperation({
     summary: `User's favorite movies retrieval service for fetching a user's list of favorite movies`,
   })
-  findFavoriteMovies(@Param('userId') userId: string) {
-    return this.userService.findFavoriteMovies(userId);
+  findFavoriteMovies(
+    @Param('userId') userId: string,
+    @Query() params: ParamsDto,
+  ) {
+    return this.userService.findFavoriteMovies(params, userId);
   }
 
   @Public()
@@ -61,8 +66,8 @@ export class UserController {
     summary:
       'User notes retrieval service for fetching all notes associated with a specific user',
   })
-  findNotes(@Param('userId') userId: string) {
-    return this.userService.findNotes(userId);
+  findNotes(@Query() params: ParamsDto, @Param('userId') userId: string) {
+    return this.userService.findNotes(params, userId);
   }
 
   @Patch(':userId')

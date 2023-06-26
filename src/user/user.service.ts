@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { ParamsDto } from '../database/dto/params.dto';
 import { User } from './entities/user.entity';
 import { FavoriteMovieService } from '../favorite-movie/favorite-movie.service';
 import { MovieNoteService } from '../movie-note/movie-note.service';
@@ -23,16 +24,21 @@ export class UserService {
     return newModel.save();
   }
 
-  findAll() {
-    return this.userModel.find().exec();
+  async findAll(params: ParamsDto) {
+    const { limit, offset, ...query } = params;
+    return this.userModel
+      .find({ ...query })
+      .limit(limit)
+      .skip(offset)
+      .exec();
   }
 
-  findFavoriteMovies(userId) {
-    return this.favoriteMovieService.findFavoriteMovieByUser(userId);
+  findFavoriteMovies(params: ParamsDto, userId) {
+    return this.favoriteMovieService.findFavoriteMovieByUser(params, userId);
   }
 
-  findNotes(userId) {
-    return this.movieNoteService.findNotesByUserId(userId);
+  findNotes(params: ParamsDto, userId) {
+    return this.movieNoteService.findNotesByUserId(params, userId);
   }
 
   findOne(userId: string) {
