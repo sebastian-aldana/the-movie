@@ -7,13 +7,17 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { MovieService } from './movie.service';
 import { CreateMovieDto, UpdateMovieDto } from './dto/movie.dto';
 import { ParamsDto } from '../database/dto/params.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Public } from '../decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Movie')
 @Controller('movie')
 export class MovieController {
@@ -27,6 +31,7 @@ export class MovieController {
     return this.movieService.create(createMovieDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary:
@@ -36,6 +41,7 @@ export class MovieController {
     return this.movieService.findAll(params);
   }
 
+  @Public()
   @Get(':movieId')
   @ApiOperation({
     summary:
@@ -45,6 +51,7 @@ export class MovieController {
     return this.movieService.findOne(movieId);
   }
 
+  @Public()
   @Get(':movieId/notes')
   @ApiOperation({
     summary:

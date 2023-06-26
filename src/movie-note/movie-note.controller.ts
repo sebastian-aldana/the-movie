@@ -7,13 +7,17 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { MovieNoteService } from './movie-note.service';
 import { CreateMovieNoteDto, UpdateMovieNoteDto } from './dto/movie-note.dto';
 import { ParamsDto } from '../database/dto/params.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Public } from '../decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Movie Note')
 @Controller('movie-note')
 export class MovieNoteController {
@@ -31,6 +35,7 @@ export class MovieNoteController {
     return this.movieNoteService.create(movieId, userId, createMovieNoteDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary:
@@ -40,6 +45,7 @@ export class MovieNoteController {
     return this.movieNoteService.findAll(params);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary:
