@@ -10,8 +10,8 @@ provider:
   region: us-east-1
   stage: ${opt:stage}
   environment:
-    MONGO_CONNECTION: mongodb+srv://sebastian-aldana:OMXrgjzOZp5FwhYq@the-movie.2gebb7m.mongodb.net/?retryWrites=true&w=majority
-    JWT_SECRET: test
+    MONGO_CONNECTION: ${env:MONGO_CONNECTION}
+    JWT_SECRET: ${env:JWT_SECRET}
 
 package:
   exclude:
